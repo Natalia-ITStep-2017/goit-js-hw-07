@@ -28,16 +28,19 @@ function selectImage(event) {
 
   const instance = basicLightbox.create(`
     <img src="${originalUrl}">
-    `);
+    `, {
+    onShow: () => {
+        document.addEventListener("keyup", closeOriginalImage);
+    },
+    onClose: () => {
+      document.removeEventListener("keyup", closeOriginalImage);
+    },
+    });
   instance.show();
-  
-  if (instance.visible()) {
-     document.addEventListener("keyup", closeOriginalImage)
-  }
 
   function closeOriginalImage(event) {
     if (event.key === 'Escape') {
-      instance.close(() => document.removeEventListener("keyup", closeOriginalImage))
+      instance.close();
     }
   }
 }
